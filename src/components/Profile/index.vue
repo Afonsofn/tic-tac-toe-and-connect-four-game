@@ -2,6 +2,7 @@
     <main>
         <section class="resume">
             <img src="@/assets/images/raul-photo.jpeg" alt="Raul Photo">
+            
             <div>
                 <h1>Raul Afonso</h1>
                 <p>Age: 24</p>
@@ -9,6 +10,7 @@
                 <p>Occupatin: Frontend Developer</p>
             </div>
         </section>
+
         <section class="about-me">
             <p>About me:</p>
             <p>

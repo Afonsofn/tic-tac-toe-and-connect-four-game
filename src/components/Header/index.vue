@@ -1,6 +1,7 @@
 <template>
     <header>
         <img src="@/assets/images/SWORD_Health_logo.svg" alt="Sword Logo">
+        
         <section>
             <h3>Frontend developer</h3>
             <h4>Challenge</h4>
