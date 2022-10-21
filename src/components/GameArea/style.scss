@@ -1,3 +1,16 @@
 main {
-    background-color: blue;
+    background-color: var(--white-grey);
+    padding: 2rem 10rem;
+
+    h2 {
+        font-family: 'glacial-indifference-bold';
+    }
+
+    @media (max-width: 1250px) {
+        padding: 2rem 6rem;
+    }
+
+    @media (max-width: 770px) {
+        padding: 2rem 2rem;
+    }
 }

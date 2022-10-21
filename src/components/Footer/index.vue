@@ -23,7 +23,7 @@
 
             <div class="input-wrapper">
                 <input type="text" placeholder="Subscribe our games" v-model="email">
-                <img src="@/assets/images/send.svg" alt="Facebook Logo">
+                <button><img src="@/assets/images/send.svg" alt="Facebook Logo"></button>
             </div>
         </section>
     </main>

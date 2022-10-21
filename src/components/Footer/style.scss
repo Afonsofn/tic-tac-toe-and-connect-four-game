@@ -34,12 +34,22 @@ main {
             border: 1px solid var(--grey-dark);
             margin-bottom: 1rem;
         }
-        
-        img {
-            background-color: var(--grey-dark);
+        button {
+            display: flex;
+            align-items: center;
             height: 2.5rem;
             width: 3rem;
-            padding: .5rem;
+            border: none;
+            background-color: var(--grey-dark);
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            img {
+                padding: .3rem;
+                margin: 0;
+            }
         }
     }
 
