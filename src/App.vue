@@ -1,9 +1,11 @@
 <template>
-  <Header />
-  <Profile />
-  <GameArea />
-  <Statistics />
-  <Footer />
+  <main class="main-wrapper">
+    <Header />
+    <Profile />
+    <GameArea />
+    <Statistics />
+    <Footer />
+  </main>
 </template>
 
 <script>

@@ -1,0 +1,36 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--grey);
+    padding: 1.8rem 10rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+
+    img {
+        width: 13rem;
+    }
+
+    section {
+        h3 {
+            font-family: 'glacial-indifference-bold';
+        }
+        h4 {
+            font-family: 'glacial-indifference-italic';
+            text-align: end;
+        }
+    }
+
+    @media (max-width: 1250px) {
+        padding: 1.8rem 6rem;
+    }
+
+    @media (max-width: 770px) {
+        padding: 1.8rem 2rem;
+    }
+}
+
+.transparent {
+    background-color: var(--transparent-grey) !important;
+}

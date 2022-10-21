@@ -1,0 +1,57 @@
+main {
+    padding: 1.8rem 10rem;
+    padding-top: 10rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    p {
+        padding-top: .5rem;
+    }
+
+    .resume {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 2rem;
+
+        img {
+            border-radius: 50%;
+            width: 14rem;
+            height: 14rem;
+        }
+    }
+
+    .about-me {
+        width: 40%;
+        p {
+            text-align: end;
+        }
+    }
+
+    @media (max-width: 1250px) {
+        padding: 1.8rem 6rem;
+        padding-top: 10rem;
+    }
+
+    @media (max-width: 770px) {
+        padding: 1.8rem 2rem;
+        padding-top: 9rem;
+
+        justify-content: center;
+
+        .resume {
+            flex-direction: column;
+            align-items: center;
+
+            h1, p {
+                text-align: center;
+            }
+        }
+
+        .about-me {
+            display: none;
+        }
+    }
+}
