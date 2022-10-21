@@ -1,0 +1,49 @@
+@font-face {
+  font-family: 'glacial-indifference-bold';
+  src: url('./fonts/glacialindifference-bold-webfont.woff2') format('woff2'),
+       url('./fonts/glacialindifference-bold-webfont.woff') format('woff'),
+       url('./fonts/glacialindifference-bold-webfont.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'glacial-indifference-italic';
+  src: url('./fonts/glacialindifference-italic-webfont.woff2') format('woff2'),
+       url('./fonts/glacialindifference-italic-webfont.woff') format('woff'),
+}
+
+@font-face {
+  font-family: 'glacial-indifference-regular';
+  src: url('./fonts/glacialindifference-regular-webfont.woff2') format('woff2'),
+       url('./fonts/glacialindifference-regular-webfont.woff') format('woff'),
+       url('./fonts/glacialindifference-regular-webfont.ttf') format('truetype');
+}
+
+@media (max-width: 1500px) {
+  html { font-size: 95%; }
+}
+@media (max-width: 1080px) {
+  html { font-size: 90%; }
+}
+@media (max-width: 950px) {
+  html { font-size: 85%; }
+}
+@media (max-width: 820px) {
+  html { font-size: 80%; }
+}
+
+html, body, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+html, body, *, #app {
+  font-family: 'glacial-indifference-regular', sans-serif !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  a {
+    text-decoration: none;
+  }
+}
