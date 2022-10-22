@@ -61,8 +61,13 @@ main {
                 padding: 0;
             }
 
-            .currentPlayer {
+            .currentPlayer1 {
                 color: var(--primary);
+                font-size: 2.5rem;
+            }
+
+            .currentPlayer2 {
+                color: var(--secondary);
                 font-size: 2.5rem;
             }
         }
@@ -175,9 +180,14 @@ main {
                     padding: 0;
                 }
     
-                .currentPlayer {
+                .currentPlayer1 {
                     color: var(--primary);
                     font-size: 1.8rem;
+                }
+                
+                .currentPlayer2 {
+                    color: var(--secondary);
+                    
                 }
             }
     

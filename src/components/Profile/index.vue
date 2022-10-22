@@ -23,4 +23,12 @@
     </main>
 </template>
 
+<script>
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'Profile',
+});
+</script>
+
 <style lang="scss" scoped src="./style.scss" />

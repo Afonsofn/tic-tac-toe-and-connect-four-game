@@ -13,7 +13,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Profile',
+  name: 'Header',
   methods: {
     addTransparencyToHeader() {
       const { classList } = document.querySelector("header")

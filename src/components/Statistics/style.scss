@@ -1,3 +1,154 @@
 main {
-    background-color: var(--primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 10rem;
+
+    h2 {
+        font-family: 'glacial-indifference-bold';
+        text-align: center;
+    }
+
+    p {
+        padding: 1rem;
+    }
+
+    section.stats-wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2rem;
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        .stats-item {
+            .game-victories-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 3rem;
+    
+                .game-victories-item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+    
+                    .circles-wrapper {
+                        .circles {
+                            display: flex;
+                            align-items: center;
+                            gap: 1rem;
+    
+                            .circle {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                background-color: var(--grey-dark);
+                                width: 3rem;
+                                height: 3rem;
+                                border-radius: 50%;
+                                font-family: 'glacial-indifference-bold';
+                                color: var(--white);
+                            }
+                        }
+                        .victory-lose-wrapper {
+                            display: flex;
+                            align-items: center;
+                            gap: 1rem;
+    
+                            .victory-lose {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 3rem;
+                                height: 2rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .played-matchs {
+                margin-bottom: 1rem;
+
+                .played-wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: .5rem;
+    
+                    .played-item {
+                        border: 1px solid var(--grey-dark);
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        margin-top: 1rem;
+                        border-radius: 50%;
+                    }
+
+                    .played-item.P1 {
+                        background-color: var(--primary);
+                        border: none;
+                    }
+
+                    .played-item.P2 {
+                        background-color: var(--secondary);
+                        border: none;
+                    }
+
+                    .played-item.DW {
+                        background-color: var(--grey-dark);
+                    }
+                }
+            }
+
+            .game-history .history-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: .5rem;
+
+                .history-item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid var(--grey-dark);
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    margin-top: 1rem;
+                }
+            }
+        }
+    }
+
+    section.timer-wrapper {
+        .timer {
+            font-size: 2rem;
+            padding-top: 1rem;
+        }
+    }
+
+    @media (max-width: 1250px) {
+        padding: 2rem 6rem;
+    }
+
+    @media (max-width: 770px) {
+        padding: 2rem 2rem;
+        
+        section.stats-wrapper {
+            flex-direction: column;
+            gap: 3rem;
+
+            .stats-item .game-history {
+                margin-top: 4rem;
+            }
+        }
+
+        section.timer-wrapper {
+           margin-top: 2rem;
+        }
+    }
+
 }

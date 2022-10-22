@@ -33,7 +33,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'App',
+  name: 'Footer',
   data: function() {
     return {
         email: '',

@@ -2,8 +2,8 @@
   <main class="main-wrapper">
     <Header />
     <Profile />
-    <GameArea />
-    <Statistics />
+    <GameArea :stats="stats" />
+    <Statistics :stats="stats" />
     <Footer />
   </main>
 </template>
@@ -19,5 +19,18 @@ import Footer from './components/Footer/index.vue'
 export default defineComponent({
   name: 'App',
   components: { Header, Profile, GameArea, Statistics, Footer },
+  data: function() {
+    return {
+      stats: {
+        playerOneGameWins: 0,
+        playerTwoGameWins: 0,
+        numOfMatchesTotal: [],
+        gameHistory: [],
+        totalHours: 0,
+        totalMinutes: 0,
+        totalSeconds: 0,
+      }
+    }
+  },
 });
 </script>

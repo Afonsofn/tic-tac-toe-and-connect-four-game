@@ -10,7 +10,7 @@
 
         <section class="board-wrapper">
             <div class="player-one desktop">
-                <p :class="currentPlayer === 'X' ? 'currentPlayer' : ''">Player 1</p>
+                <p :class="currentPlayer === 'P1' ? 'currentPlayer1' : ''">Player 1</p>
                 <p>{{ playerOneMatchWins }}</p>
             </div>
             
@@ -22,77 +22,62 @@
                         @click="chooseCell(rowIndex, cellIndex)"
                         class="cell"
                     >
-                        <img v-if="cell" :id="`${rowIndex}${cellIndex}`" :src="getImageUrl(cell)">
+                        <img v-if="cell" :ref="setCellId(rowIndex, cellIndex)" :src="getImageUrl(cell)">
                     </div>
                 </div>
             </div>
 
             <div class="player-two desktop">
-                <p :class="currentPlayer === 'O' ? 'currentPlayer' : ''">Player 2</p>
+                <p :class="currentPlayer === 'P2' ? 'currentPlayer2' : ''">Player 2</p>
                 <p>{{ playerTwoMatchWins }}</p>
             </div>
         </section>
 
-        <div v-if="!hadAGameDraw && !gameWinner && haveAWinner"><!-- Modal match -->
-            <h2>{{ haveAWinner === 'X' ? 'Player 1' : 'Player 2' }} won, Congratulations!</h2>
-
-            <button @click="restartMatch">Next Match</button>
-        </div>
-
-        <div v-if="!hadAGameDraw && !gameWinner && hadAMatchDraw"><!-- Modal Match Draw -->
-            <h2>Had a Draw!</h2>
-
-            <button @click="restartMatch">Next Match</button>
-        </div>
-
-        <div v-if="gameWinner"><!-- Modal gameWinner -->
-            <h2>Congratulations {{ gameWinner === 'X' ? 'Player 1' : 'Player 2' }}, won the Game!</h2>
-
-            <button @click="restartGame">Next Game</button>
-        </div>
-
-        <div v-if="hadAGameDraw"><!-- Modal Game Draw -->
-            <h2>Had a Game Draw!</h2>
-
-            <button @click="restartGame">Next Game</button>
-        </div>
-
         <section class="timer-wrapper">
             <div class="player-one mobile">
-                <p :class="currentPlayer === 'X' ? 'currentPlayer' : ''">Player 1</p>
+                <p :class="currentPlayer === 'P1' ? 'currentPlayer1' : ''">Player 1</p>
                 <p>{{ playerOneMatchWins }}</p>
             </div>
             <div class="timer">
                 {{ formatedTimer }}
             </div>
             <div class="player-two mobile">
-                <p :class="currentPlayer === 'O' ? 'currentPlayer' : ''">Player 2</p>
+                <p :class="currentPlayer === 'P2' ? 'currentPlayer2' : ''">Player 2</p>
                 <p>{{ playerTwoMatchWins }}</p>
             </div>
         </section>
 
-        {{ numOfMatches }}
-
-        <div>
-            {{ formatedTotalTimer }}
-        </div>
-
+        <ModalMatch
+            :matchWinner="haveAWinner"
+            :gameWinner="gameWinner"
+            :gameDraw="hadAGameDraw"
+            @restartGame="restartGame"
+            @restartMatch="restartMatch"
+            ref="contentModal"
+        />
     </main>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
+import ModalMatch from '../Modal/index.vue';
 
 export default defineComponent({
   name: 'GameArea',
+  components: { ModalMatch },
+  props: {
+    stats: {
+      type: Object,
+      required: true
+    }
+  },
   data: function() {
     return {
+        startPlayer: '',
         currentPlayer: '',
         lastFirstPlayer: '',
         playerOneMatchWins: 0,
         playerTwoMatchWins: 0,
-        playerOneGameWins: 0,
-        playerTwoGameWins: 0,
         gameWinner: '',
         numOfMatches: 0,
         hadAMatchDraw: false,
@@ -101,9 +86,6 @@ export default defineComponent({
         hours: 0,
         minutes: 0,
         seconds: 0,
-        totalHours: 0,
-        totalMinutes: 0,
-        totalSeconds: 0,
         timer: null,
         timerOn: false
     }
@@ -111,42 +93,52 @@ export default defineComponent({
   watch: {
     numOfMatches: function() {
         if (this.numOfMatches === 5) {
-            // Open modal winner of game
+            this.openModal()
             if (this.playerOneMatchWins !== this.playerTwoMatchWins) {
-                this.gameWinner = this.playerOneMatchWins > this.playerTwoMatchWins ? 'X' : 'O';
-                this.gameWinner === 'X' ? this.playerOneGameWins++ : this.playerTwoGameWins++;       
+                this.gameWinner = this.playerOneMatchWins > this.playerTwoMatchWins ? 'P1' : 'P2';
+                this.gameWinner === 'P1' ? this.stats.playerOneGameWins++ : this.stats.playerTwoGameWins++;
+                this.stats.gameHistory.unshift(this.gameWinner)
                 
                 return
             }
 
-            // Open modal game draw
+            this.openModal()
             this.hadAGameDraw = true;
+            this.stats.gameHistory.unshift('DW')
         }
     },
     playerOneMatchWins: function() {
         if (this.playerOneMatchWins === 3 && this.numOfMatches !== 5) {
-            // Open modal winner of game
-            this.gameWinner = 'X'
-            this.playerOneGameWins++
+            this.openModal()
+
+            this.gameWinner = 'P1'
+            this.stats.gameHistory.unshift(this.gameWinner)
+            this.stats.playerOneGameWins++
         }
     },
     playerTwoMatchWins: function() {
         if (this.playerTwoMatchWins === 3 && this.numOfMatches !== 5) {
-            // Open modal winner of game
-            this.gameWinner = 'O'
-            this.playerTwoGameWins++
+            this.openModal()
+
+            this.gameWinner = 'P2'
+            this.stats.gameHistory.unshift(this.gameWinner)
+            this.stats.playerTwoGameWins++
         }
     }
   },
   computed: {
     haveAWinner() {
-        return this.gameResult(this.gameBoard.flat())
+        const result = this.gameResult(this.gameBoard.flat())
+
+        if (result) {
+            this.openModal()
+            return result
+        }
+
+        return
     },
     formatedTimer() {
         return `${this.formatNumber(this.hours)}:${this.formatNumber(this.minutes)}:${this.formatNumber(this.seconds)}`
-    },
-    formatedTotalTimer() {
-        return `${this.formatNumber(this.totalHours)}:${this.formatNumber(this.totalMinutes)}:${this.formatNumber(this.totalSeconds)}`
     }
   },
   methods: {
@@ -163,20 +155,24 @@ export default defineComponent({
                 boardValue[firstCell] ===
                 boardValue[thirdCell]
             ) {
-                // Open modal
-                boardValue[firstCell] === 'X' ? this.playerOneMatchWins++ : this.playerTwoMatchWins++;
+                boardValue[firstCell] === 'P1' ? this.playerOneMatchWins++ : this.playerTwoMatchWins++;
+
+                this.changeColorOfWinner(firstCell, secondCell, thirdCell)
                 
                 this.pauseTimer()
 
                 this.numOfMatches++;
+                this.stats.numOfMatchesTotal.unshift(boardValue[firstCell]);
                 
                 return boardValue[firstCell];
             }
         }
 
         if(boardValue.find(cell => cell === '') === undefined) {
-            // Open modal
+            this.openModal()
+
             this.numOfMatches++;
+            this.stats.numOfMatchesTotal.unshift('DW');
 
             this.hadAMatchDraw = true;
 
@@ -192,11 +188,11 @@ export default defineComponent({
 
         this.gameBoard[line][cell] = this.currentPlayer
 
-        this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X'
+        this.currentPlayer = this.currentPlayer === 'P1' ? 'P2' : 'P1'
     },
     restartMatch() {
+        this.$refs.contentModal.closeModal()
         this.gameBoard = [['', '', ''], ['', '', ''], ['', '', '']]
-
         this.hadAMatchDraw = false
     },
     restartGame() {
@@ -206,7 +202,7 @@ export default defineComponent({
         this.numOfMatches = 0;
         this.playerOneMatchWins = 0;
         this.playerTwoMatchWins = 0;
-        this.lastFirstPlayer = this.lastFirstPlayer === 'X' ? 'O' : 'X';
+        this.lastFirstPlayer = this.lastFirstPlayer === 'P1' ? 'P2' : 'P1';
         this.clearTimer()
     },
     startTimer() {
@@ -232,13 +228,24 @@ export default defineComponent({
         this.timerOn = false
     },
     clearTimer() {
-        this.totalHours = this.totalHours + this.hours,
-        this.totalMinutes = this.totalMinutes + this.minutes,
-        this.totalSeconds = this.totalSeconds + this.seconds,
-        this.hours = 0,
-        this.minutes = 0,
-        this.seconds = 0,
-        this.timer = null,
+        this.stats.totalSeconds = this.stats.totalSeconds + this.seconds
+        if (this.stats.totalSeconds >= 60) {
+            this.stats.totalSeconds = this.stats.totalSeconds - 60
+            this.stats.totalMinutes++
+        }
+
+        this.stats.totalMinutes = this.stats.totalMinutes + this.minutes
+        if (this.stats.totalMinutes >= 60) {
+            this.stats.totalMinutes = this.stats.totalMinutes - 60
+            this.stats.totalHours++
+        }
+
+        this.stats.totalHours = this.stats.totalHours + this.hours
+
+        this.hours = 0
+        this.minutes = 0
+        this.seconds = 0
+        this.timer = null
         this.timerOn = false
     },
     formatNumber(num) {
@@ -246,14 +253,54 @@ export default defineComponent({
     },
     setFirstPlayerRamdomly() {
         Math.floor(Math.random() * 2) === 0
-            ? this.currentPlayer = 'X'
-            : this.currentPlayer = 'O'
+            ? this.currentPlayer = 'P1'
+            : this.currentPlayer = 'P2'
         
         this.lastFirstPlayer = this.currentPlayer
+        this.startPlayer = this.currentPlayer
     },
     getImageUrl(player) {
-        return new URL(`../../assets/images/${player}_dark.svg`, import.meta.url).href
-    }
+        const url = this.startPlayer === player ? 'X' : 'O'
+
+        return new URL(`../../assets/images/${url}_dark.svg`, import.meta.url).href
+    },
+    changeColorOfWinner(firstCell, secondCell, thirdCell) {
+        setTimeout(() => {
+            const C1 = this.$refs[`cell-id-${firstCell}`][0].src.replace('dark', 'bright');
+            const C2 = this.$refs[`cell-id-${secondCell}`][0].src.replace('dark', 'bright');
+            const C3 = this.$refs[`cell-id-${thirdCell}`][0].src.replace('dark', 'bright');
+
+            this.$refs[`cell-id-${firstCell}`][0].src = new URL(C1, import.meta.url).href
+            this.$refs[`cell-id-${secondCell}`][0].src = new URL(C2, import.meta.url).href
+            this.$refs[`cell-id-${thirdCell}`][0].src = new URL(C3, import.meta.url).href
+        }, 150);
+    },
+    setCellId(rowIndex, cellIndex) {
+        if(rowIndex === 1) {
+            return `cell-id-${cellIndex + 3}`
+        }
+
+        if(rowIndex === 2) {
+            return `cell-id-${cellIndex + 6}`
+        }
+
+        return `cell-id-${cellIndex}`
+    },
+    openModal() {
+        const modal = this.$refs.contentModal.$el;
+
+        modal.style.display = "block";
+
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+
+                if(this.gameWinner || this.gameDraw) return this.restartGame()
+
+                this.restartMatch()
+            }
+        }
+    },
   },
   mounted() {
     this.setFirstPlayerRamdomly()
