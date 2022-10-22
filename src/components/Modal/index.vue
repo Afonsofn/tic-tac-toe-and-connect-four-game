@@ -23,23 +23,23 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Modal',
-  props: {
-    matchWinner: {
-      type: String,
+    name: 'Modal',
+    props: {
+        matchWinner: {
+            type: String,
+        },
+        gameWinner: {
+            type: String,
+        },
+        gameDraw: {
+            type: Boolean,
+        },
     },
-    gameWinner: {
-      type: String,
-    },
-    gameDraw: {
-      type: Boolean,
-    },
-  },
-  methods: {
-    closeModal() {
-        this.$refs.contentModal.style.display = "none";
+    methods: {
+        closeModal() {
+            this.$refs.contentModal.style.display = "none";
+        }
     }
-  }
 });
 </script>
 

@@ -1,11 +1,11 @@
 <template>
-  <main class="main-wrapper">
-    <Header />
-    <Profile />
-    <GameArea :stats="stats" />
-    <Statistics :stats="stats" />
-    <Footer />
-  </main>
+    <main class="main-wrapper">
+        <Header />
+        <Profile />
+        <GameArea :stats="stats" />
+        <Statistics :stats="stats" />
+        <Footer />
+    </main>
 </template>
 
 <script>
@@ -17,20 +17,20 @@ import Statistics from './components/Statistics/index.vue'
 import Footer from './components/Footer/index.vue'
 
 export default defineComponent({
-  name: 'App',
-  components: { Header, Profile, GameArea, Statistics, Footer },
-  data: function() {
-    return {
-      stats: {
-        playerOneGameWins: 0,
-        playerTwoGameWins: 0,
-        numOfMatchesTotal: [],
-        gameHistory: [],
-        totalHours: 0,
-        totalMinutes: 0,
-        totalSeconds: 0,
-      }
-    }
-  },
+    name: 'App',
+    components: { Header, Profile, GameArea, Statistics, Footer },
+    data: function() {
+        return {
+            stats: {
+                playerOneGameWins: 0,
+                playerTwoGameWins: 0,
+                numOfMatchesTotal: [],
+                gameHistory: [],
+                totalHours: 0,
+                totalMinutes: 0,
+                totalSeconds: 0,
+            }
+        }
+    },
 });
 </script>

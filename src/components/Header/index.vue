@@ -13,21 +13,21 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Header',
-  methods: {
-    addTransparencyToHeader() {
-      const { classList } = document.querySelector("header")
+    name: 'Header',
+    methods: {
+        addTransparencyToHeader() {
+            const { classList } = document.querySelector("header")
 
-      window.addEventListener('scroll', function() { 
-        if (window.scrollY >= 150) return classList.add("transparent")
+            window.addEventListener('scroll', function() { 
+                if (window.scrollY >= 150) return classList.add("transparent")
 
-        classList.remove("transparent")
-      })
+                classList.remove("transparent")
+            })
+        }
+    },
+    mounted() {
+        this.addTransparencyToHeader();
     }
-  },
-  mounted() {
-    this.addTransparencyToHeader();
-  }
 });
 </script>
 

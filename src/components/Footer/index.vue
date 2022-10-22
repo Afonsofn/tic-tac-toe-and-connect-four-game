@@ -33,12 +33,12 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Footer',
-  data: function() {
-    return {
-        email: '',
+    name: 'Footer',
+    data: function() {
+        return {
+            email: '',
+        }
     }
-  }
 });
 </script>
 

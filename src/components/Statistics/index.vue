@@ -59,78 +59,77 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Statistics',
-  props: {
-    stats: {
-      type: Object,
-      required: true
+    name: 'Statistics',
+    props: {
+        stats: {
+        type: Object,
+        required: true
+        }
+    },
+    data: function() {
+        return {
+            statsArray: [
+                {
+                    name: 'Player 1',
+                    wins: 'percentageOfPlayerOneWins',
+                    loses: 'percentageOfPlayerTwoWins',
+                },
+                {
+                    name: 'Player 2',
+                    wins: 'percentageOfPlayerTwoWins',
+                    loses: 'percentageOfPlayerOneWins',
+                }
+            ],
+        }
+    },
+    computed: {
+        formatedTotalTimer() {
+            const { totalSeconds, totalMinutes, totalHours } = this.stats
+
+            return `${this.formatNumber(totalHours)}:${this.formatNumber(totalMinutes)}:${this.formatNumber(totalSeconds)}`
+        },
+        percentageOfPlayerOneWins() {
+            const { playerOneGameWins, playerTwoGameWins } = this.stats
+
+            const result = (playerOneGameWins / (playerOneGameWins + playerTwoGameWins) * 100).toFixed(0)
+
+            return result === 'NaN' ? 0 : result
+        },
+        percentageOfPlayerTwoWins() {
+            const { playerOneGameWins, playerTwoGameWins } = this.stats
+
+            const result = (playerTwoGameWins / (playerOneGameWins + playerTwoGameWins) * 100).toFixed(0)
+
+            return result === 'NaN' ? 0 : result
+        },
+        gameHistory() {
+            const gameHistory = this.stats.gameHistory
+            const gameHistoryClone = [...gameHistory]
+
+            return [
+                ...gameHistoryClone.splice(0,10),
+                ...gameHistory.length < 10
+                    ? new Array(10 - gameHistory.length)
+                    : []
+            ]
+        },
+        playedMatchs() {
+            const playedMatchs = this.stats.numOfMatchesTotal
+            const playedMatchsClone = [...playedMatchs]
+
+            return [
+                ...playedMatchsClone.splice(0,10),
+                ...playedMatchs.length < 10
+                    ? new Array(10 - playedMatchs.length)
+                    : []
+            ]
+        }
+    },
+    methods: {
+        formatNumber(num) {
+            return num < 10 ? `0${num}` : num;
+        }
     }
-  },
-  data: function() {
-    return {
-        statsArray: [
-            {
-                name: 'Player 1',
-                wins: 'percentageOfPlayerOneWins',
-                loses: 'percentageOfPlayerTwoWins',
-            },
-            {
-                name: 'Player 2',
-                wins: 'percentageOfPlayerTwoWins',
-                loses: 'percentageOfPlayerOneWins',
-            }
-        ],
-    }
-  },
-  computed: {
-    formatedTotalTimer() {
-        const { totalSeconds, totalMinutes, totalHours } = this.stats
-
-        return `${this.formatNumber(totalHours)}:${this.formatNumber(totalMinutes)}:${this.formatNumber(totalSeconds)}`
-    },
-    percentageOfPlayerOneWins() {
-        const { playerOneGameWins, playerTwoGameWins } = this.stats
-
-        const result = (playerOneGameWins / (playerOneGameWins + playerTwoGameWins) * 100).toFixed(0)
-
-        return result === 'NaN' ? 0 : result
-    },
-    percentageOfPlayerTwoWins() {
-        const { playerOneGameWins, playerTwoGameWins } = this.stats
-
-        const result = (playerTwoGameWins / (playerOneGameWins + playerTwoGameWins) * 100).toFixed(0)
-
-        return result === 'NaN' ? 0 : result
-    },
-    gameHistory() {
-        const gameHistory = this.stats.gameHistory
-        const gameHistoryClone = [...gameHistory]
-
-        return [
-            ...gameHistoryClone.splice(0,10),
-            ...gameHistory.length < 10
-                ? new Array(10 - gameHistory.length)
-                : []
-        ]
-    },
-    playedMatchs() {
-        const playedMatchs = this.stats.numOfMatchesTotal
-        const playedMatchsClone = [...playedMatchs]
-
-        return [
-            ...playedMatchsClone.splice(0,10),
-            ...playedMatchs.length < 10
-                ? new Array(10 - playedMatchs.length)
-                : []
-        ]
-    }
-  },
-  methods: {
-    formatNumber(num) {
-        return num < 10 ? `0${num}` : num;
-    },
-  }
- 
 });
 </script>
 

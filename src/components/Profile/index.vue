@@ -14,10 +14,10 @@
         <section class="about-me">
             <p>About me:</p>
             <p>
-                My Name Is john Smith lorem empus id fringilla molestie
-                ornare diam in olestie ipsum etium rosn ollicitudin est,
-                porttitor amet hitmassa Done cporttitor dolor shit dolor
-                kiren lorem nisl molestie pretium etfring.
+                Heyy, I'm Raul Afonso, from Recife, Pernambuco, Frontend/Mobile developer,
+                lover of technology and everything that orbits in this incredibly fascinating universe,
+                I'm getting deeper and deeper in knowledge so that I can be part of great projects that
+                have an impact real in people's lives.
             </p>
         </section>
     </main>
@@ -27,7 +27,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Profile',
+    name: 'Profile',
 });
 </script>
 
