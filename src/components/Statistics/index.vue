@@ -60,16 +60,11 @@
 <script>
 import { defineComponent } from 'vue';
 import mixins from '@/mixins/index.vue';
+import { mapState } from 'vuex';
 
 export default defineComponent({
     name: 'Statistics',
     mixins: [mixins],
-    props: {
-        stats: {
-            type: Object,
-            required: true
-        }
-    },
     data: function() {
         return {
             statsArray: [
@@ -87,6 +82,9 @@ export default defineComponent({
         }
     },
     computed: {
+        ...mapState({
+            stats: state => state.stats,
+        }),
         formatedTotalTimer() {
             const { totalSeconds, totalMinutes, totalHours } = this.stats
 

@@ -22,7 +22,11 @@
                         @click="chooseCell(rowIndex, cellIndex)"
                         class="cell"
                     >
-                        <img v-if="cell" :ref="setCellId(rowIndex, cellIndex)" :src="getImageUrl(cell)">
+                        <img
+                            v-if="cell"
+                            :ref="setCellId(rowIndex, cellIndex)"
+                            :src="require(`@/assets/images/${startPlayer === cell ? 'X' : 'O'}_dark.svg`)"
+                        >
                     </div>
                 </div>
             </div>
@@ -64,17 +68,12 @@
 import { defineComponent } from 'vue';
 import ModalMatch from '../Modal/index.vue';
 import mixins from '@/mixins/index.vue';
+import { mapMutations, mapState } from 'vuex';
 
 export default defineComponent({
     name: 'GameArea',
     components: { ModalMatch },
     mixins: [mixins],
-    props: {
-        stats: {
-        type: Object,
-        required: true
-        }
-    },
     data: function() {
         return {
             startPlayer: '',
@@ -100,15 +99,15 @@ export default defineComponent({
                 this.openModal()
                 if (this.playerOneMatchWins !== this.playerTwoMatchWins) {
                     this.gameWinner = this.playerOneMatchWins > this.playerTwoMatchWins ? 'P1' : 'P2';
-                    this.gameWinner === 'P1' ? this.stats.playerOneGameWins++ : this.stats.playerTwoGameWins++;
-                    this.stats.gameHistory.unshift(this.gameWinner)
+                    this.gameWinner === 'P1' ? this.playerOneGameWinsAdd() : this.playerTwoGameWinsAdd();
+                    this.gameHistoryAdd(this.gameWinner)
                     
                     return
                 }
 
                 this.openModal()
                 this.hadAGameDraw = true;
-                this.stats.gameHistory.unshift('DW')
+                this.gameHistoryAdd('DW')
             }
         },
         playerOneMatchWins: function() {
@@ -116,8 +115,8 @@ export default defineComponent({
                 this.openModal()
 
                 this.gameWinner = 'P1'
-                this.stats.gameHistory.unshift(this.gameWinner)
-                this.stats.playerOneGameWins++
+                this.gameHistoryAdd(this.gameWinner)
+                this.playerOneGameWinsAdd()
             }
         },
         playerTwoMatchWins: function() {
@@ -125,12 +124,15 @@ export default defineComponent({
                 this.openModal()
 
                 this.gameWinner = 'P2'
-                this.stats.gameHistory.unshift(this.gameWinner)
-                this.stats.playerTwoGameWins++
+                this.gameHistoryAdd(this.gameWinner)
+                this.playerTwoGameWinsAdd()
             }
         }
     },
     computed: {
+        ...mapState({
+            stats: state => state.stats,
+        }),
         haveAWinner() {
             const result = this.gameResult(this.gameBoard.flat())
 
@@ -146,6 +148,15 @@ export default defineComponent({
         }
     },
     methods: {
+        ...mapMutations([
+            'playerOneGameWinsAdd',
+            'playerTwoGameWinsAdd',
+            'gameHistoryAdd',
+            'numOfMatchesTotalAdd',
+            'totalHoursAdd',
+            'totalMinutesAdd',
+            'totalSecondsAdd'
+        ]),
         gameResult(boardValue) {
             const winResults = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
@@ -166,7 +177,7 @@ export default defineComponent({
                     this.pauseTimer()
 
                     this.numOfMatches++;
-                    this.stats.numOfMatchesTotal.unshift(boardValue[firstCell]);
+                    this.numOfMatchesTotalAdd(boardValue[firstCell]);
                     
                     return boardValue[firstCell];
                 }
@@ -176,7 +187,7 @@ export default defineComponent({
                 this.openModal()
 
                 this.numOfMatches++;
-                this.stats.numOfMatchesTotal.unshift('DW');
+                this.numOfMatchesTotalAdd('DW');
 
                 this.hadAMatchDraw = true;
 
@@ -232,19 +243,19 @@ export default defineComponent({
             this.timerOn = false
         },
         clearTimer() {
-            this.stats.totalSeconds = this.stats.totalSeconds + this.seconds
+            this.totalSecondsAdd(this.stats.totalSeconds + this.seconds)
             if (this.stats.totalSeconds >= 60) {
-                this.stats.totalSeconds = this.stats.totalSeconds - 60
-                this.stats.totalMinutes++
+                this.totalSecondsAdd(this.stats.totalSeconds - 60)
+                this.totalMinutesAdd(this.stats.totalMinutes + 1)
             }
 
-            this.stats.totalMinutes = this.stats.totalMinutes + this.minutes
+            this.totalMinutesAdd(this.stats.totalMinutes + this.minutes)
             if (this.stats.totalMinutes >= 60) {
-                this.stats.totalMinutes = this.stats.totalMinutes - 60
-                this.stats.totalHours++
+                this.totalMinutesAdd(this.stats.totalMinutes - 60)
+                this.totalHoursAdd(this.stats.totalMinutes + 1)
             }
 
-            this.stats.totalHours = this.stats.totalHours + this.hours
+            this.totalHoursAdd(this.stats.totalHours + this.hours)
 
             this.hours = 0
             this.minutes = 0
@@ -260,20 +271,13 @@ export default defineComponent({
             this.lastFirstPlayer = this.currentPlayer
             this.startPlayer = this.currentPlayer
         },
-        getImageUrl(player) {
-            const url = this.startPlayer === player ? 'X' : 'O'
-
-            return new URL(`../../assets/images/${url}_dark.svg`, import.meta.url).href
-        },
         changeColorOfWinner(firstCell, secondCell, thirdCell) {
             setTimeout(() => {
-                const C1 = this.$refs[`cell-id-${firstCell}`][0].src.replace('dark', 'bright');
-                const C2 = this.$refs[`cell-id-${secondCell}`][0].src.replace('dark', 'bright');
-                const C3 = this.$refs[`cell-id-${thirdCell}`][0].src.replace('dark', 'bright');
-
-                this.$refs[`cell-id-${firstCell}`][0].src = new URL(C1, import.meta.url).href
-                this.$refs[`cell-id-${secondCell}`][0].src = new URL(C2, import.meta.url).href
-                this.$refs[`cell-id-${thirdCell}`][0].src = new URL(C3, import.meta.url).href
+                const player = this.$refs[`cell-id-${firstCell}`][0].src.split('img/')[1].split('_')[0];
+                
+                this.$refs[`cell-id-${firstCell}`][0].src = require(`@/assets/images/${player}_bright.svg`)
+                this.$refs[`cell-id-${secondCell}`][0].src = require(`@/assets/images/${player}_bright.svg`)
+                this.$refs[`cell-id-${thirdCell}`][0].src = require(`@/assets/images/${player}_bright.svg`)
             }, 150);
         },
         setCellId(rowIndex, cellIndex) {
