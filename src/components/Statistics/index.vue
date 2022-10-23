@@ -13,8 +13,8 @@
 
                         <div class="circles-wrapper">
                             <div class="circles">
-                                <div class="circle">{{ this[item.wins] }}%</div>
-                                <div class="circle">{{ this[item.loses] }}%</div>
+                                <div :class="`circle ${item.winClass}`">{{ this[item.wins] }}%</div>
+                                <div :class="`circle ${item.loseClass}`">{{ this[item.loses] }}%</div>
                             </div>
 
                             <div class="victory-lose-wrapper">
@@ -70,11 +70,15 @@ export default defineComponent({
             statsArray: [
                 {
                     name: 'Player 1',
+                    winClass: 'player-1-win',
+                    loseClass: 'player-1-lose',
                     wins: 'percentageOfPlayerOneWins',
                     loses: 'percentageOfPlayerTwoWins',
                 },
                 {
                     name: 'Player 2',
+                    winClass: 'player-2-win',
+                    loseClass: 'player-2-lose',
                     wins: 'percentageOfPlayerTwoWins',
                     loses: 'percentageOfPlayerOneWins',
                 }
