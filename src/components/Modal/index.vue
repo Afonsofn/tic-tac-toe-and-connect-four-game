@@ -2,8 +2,10 @@
     <main ref="contentModal" class="modal">
         <div class="modal-content">
             <h2 v-if="!gameWinner && !matchWinner">We had a draw</h2>
+            
             <template v-else>
                 <h2>Congratulations :D</h2>
+
                 <p>
                     {{ 
                         gameWinner

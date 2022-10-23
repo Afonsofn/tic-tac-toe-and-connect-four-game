@@ -38,9 +38,11 @@
                 <p :class="currentPlayer === 'P1' ? 'currentPlayer1' : ''">Player 1</p>
                 <p>{{ playerOneMatchWins }}</p>
             </div>
+            
             <div class="timer">
                 {{ formatedTimer }}
             </div>
+
             <div class="player-two mobile">
                 <p :class="currentPlayer === 'P2' ? 'currentPlayer2' : ''">Player 2</p>
                 <p>{{ playerTwoMatchWins }}</p>
@@ -61,10 +63,12 @@
 <script>
 import { defineComponent } from 'vue';
 import ModalMatch from '../Modal/index.vue';
+import mixins from '@/mixins/index.vue';
 
 export default defineComponent({
     name: 'GameArea',
     components: { ModalMatch },
+    mixins: [mixins],
     props: {
         stats: {
         type: Object,
@@ -247,9 +251,6 @@ export default defineComponent({
             this.seconds = 0
             this.timer = null
             this.timerOn = false
-        },
-        formatNumber(num) {
-            return num < 10 ? `0${num}` : num;
         },
         setFirstPlayerRamdomly() {
             Math.floor(Math.random() * 2) === 0

@@ -10,11 +10,13 @@
                 <div class="game-victories-container">
                     <div v-for="(item, index) in statsArray" :key="index" class="game-victories-item">
                         <p>{{ item.name }}</p>
+
                         <div class="circles-wrapper">
                             <div class="circles">
                                 <div class="circle">{{ this[item.wins] }}%</div>
                                 <div class="circle">{{ this[item.loses] }}%</div>
                             </div>
+
                             <div class="victory-lose-wrapper">
                                 <div class="victory-lose">V</div>
                                 <div class="victory-lose">L</div>
@@ -57,13 +59,15 @@
 
 <script>
 import { defineComponent } from 'vue';
+import mixins from '@/mixins/index.vue';
 
 export default defineComponent({
     name: 'Statistics',
+    mixins: [mixins],
     props: {
         stats: {
-        type: Object,
-        required: true
+            type: Object,
+            required: true
         }
     },
     data: function() {
@@ -123,11 +127,6 @@ export default defineComponent({
                     ? new Array(10 - playedMatchs.length)
                     : []
             ]
-        }
-    },
-    methods: {
-        formatNumber(num) {
-            return num < 10 ? `0${num}` : num;
         }
     }
 });

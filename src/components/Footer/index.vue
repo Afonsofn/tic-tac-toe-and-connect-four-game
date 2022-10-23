@@ -17,7 +17,9 @@
 
             <div class="social-medias">
                 <img src="@/assets/images/facebook.svg" alt="Facebook Logo">
-                <img src="@/assets/images/instagram.svg" alt="Instagram Logo">
+                <a href="https://www.instagram.com/raulafonsof/" target=_blank>
+                    <img src="@/assets/images/instagram.svg" alt="Instagram Logo">
+                </a>
                 <img src="@/assets/images/twitter.svg" alt="Twitter Logo">
             </div>
 
